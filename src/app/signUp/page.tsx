@@ -1,127 +1,54 @@
-'use client'
-import { useState } from 'react';
+'use client';
+import React from 'react';
+import Image from 'next/image';
 
-export default function SignUp() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const validateForm = () => {
-    const newErrors: any = {};
-    if (!formData.username) newErrors.username = 'Username is required';
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Valid email is required';
-    if (!formData.password) newErrors.password = 'Password is required';
-    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords must match';
-    return newErrors;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      try {
-        const response = await fetch('http://localhost:8000/api/accounts/signup/', { // Django backend API
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-            confirm_password: formData.confirmPassword, // Match Django API
-          }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log('User registered successfully', data);
-        } else {
-          const errorData = await response.json();
-          setErrors({ submit: errorData.message || 'Something went wrong' });
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        setErrors({ submit: 'Network error. Please try again later.' });
-      }
-    }
-  };
-
+export default function ContactUs() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-center text-2xl font-bold text-gray-900 mb-6">Sign Up</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="space-y-3">
-            <input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-            />
-            {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
-
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-            />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-            />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-            />
-            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+    <div className="flex flex-col md:flex-row items-center justify-center w-full p-6 md:p-12 gap-8">
+      {/* Contact Form Section */}
+      <div className="md:w-1/2 p-6 bg-white rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+        <p className="text-black font-normal text-[20px]  flex items-center" style={{ fontFamily: 'Cabinet Grotesk' }}>
+          Our first priority is customer <br />satisfaction! You can contact us at any point of time!
+        </p>
+        <div className="mb-4">
+          <p className="flex items-center gap-2 text-green-600 font-medium">
+            💬 Chat with us on Whatsapp
+          </p>
+          <p className="flex items-center gap-2 text-gray-700 font-medium">
+            📧 Drop us a mail!
+          </p>
+          <p className="flex items-center gap-2 text-gray-700 font-medium">
+            📞 Contact us on our Toll free number
+          </p>
+        </div>
+        <form className="space-y-4">
+          <div className="flex gap-4">
+            <input type="text" placeholder="First Name" className="border p-2 w-1/2 rounded" />
+            <input type="text" placeholder="Last Name" className="border p-2 w-1/2 rounded" />
           </div>
-
-          {errors.submit && <p className="text-red-500 text-sm">{errors.submit}</p>}
-
-          <button
-            type="submit"
-            className="w-full p-3 mt-4 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            Sign Up
-          </button>
+          <input type="email" placeholder="Email" className="border p-2 w-full rounded" />
+          <input type="email" placeholder="Confirm Email" className="border p-2 w-full rounded" />
+          <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
+            <label><input type="checkbox" className="mr-2" /> Website design</label>
+            <label><input type="checkbox" className="mr-2" /> Content creation</label>
+            <label><input type="checkbox" className="mr-2" /> UX design</label>
+            <label><input type="checkbox" className="mr-2" /> Strategy & consulting</label>
+            <label><input type="checkbox" className="mr-2" /> User research</label>
+            <label><input type="checkbox" className="mr-2" /> Other</label>
+          </div>
+          <button type="submit" className="bg-black text-white px-4 py-2 rounded">Send Message</button>
         </form>
+      </div>
+
+      {/* Google Maps Section */}
+      <div className="md:w-1/2 flex justify-center items-center bg-white rounded-lg shadow-lg p-6">
+        <iframe
+          className="w-full h-80 rounded-lg"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.063821223446!2d77.3718896751855!3d23.25993388484667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397c426b070b1e3b%3A0x1c3c6d2622d1b81!2sYepso!5e0!3m2!1sen!2sin!4v1649251492573!5m2!1sen!2sin"
+          allowFullScreen
+          loading="lazy"
+        ></iframe>
       </div>
     </div>
   );
