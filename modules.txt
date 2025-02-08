@@ -1,2 +1,3 @@
 npm install jwt-decode
 npm install --save @fortawesome/fontawesome-free
+npm install swiper
