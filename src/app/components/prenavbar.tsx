@@ -21,10 +21,10 @@ const PromoBanner = () => {
   }, []);
 
   return (
-    <div className="bg-red-600 py-2 text-center font-semibold relative">
+    <div className="bg-red-600 py-2 text-center font-semibold relative w-full overflow-x-hidden">
       <div
-        className={`flex justify-evenly items-center whitespace-nowrap overflow-hidden ${
-          isMobile ? 'marquee animate-marquee' : ''
+        className={`flex justify-evenly items-center whitespace-nowrap overflow-x-hidden ${
+          isMobile ? 'marquee animate-marquee ' : ''
         }`}
       >
         <span className="mr-6 flex-c justify-evenly items-center">
