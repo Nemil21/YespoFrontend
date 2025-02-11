@@ -8,29 +8,31 @@ export default function ScrollCards() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scrollX, setScrollX] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
+  const [isHovered, setIsHovered] = useState(false); // Track hover state to control scroll behavior
 
   useEffect(() => {
     if (!containerRef.current || !wrapperRef.current) return;
 
     const container = containerRef.current;
+    const totalWidth = wrapperRef.current!.scrollWidth - container.clientWidth;
 
     // Desktop Scroll (Mouse Wheel)
     const handleWheelScroll = (event: WheelEvent) => {
       event.preventDefault();
 
-      const totalWidth = wrapperRef.current!.scrollWidth - container.clientWidth;
-      const moveDistance = event.deltaY * 2; // Control speed
+      // Allow horizontal scroll only if inside the card section (isHovered)
+      if (isHovered) {
+        const moveDistance = event.deltaY * 2; // Control speed
+        const newPos = Math.min(Math.max(0, scrollX + moveDistance), totalWidth);
+        setScrollX(newPos);
 
-      const newPos = Math.min(Math.max(0, scrollX + moveDistance), totalWidth);
-      setScrollX(newPos);
-
-      gsap.to(wrapperRef.current, {
-        x: -newPos,
-        ease: "power2.out",
-        duration: 0.5,
-        overwrite: "auto",
-        scrub:3,
-      });
+        gsap.to(wrapperRef.current, {
+          x: -newPos,
+          ease: "power2.out",
+          duration: 0.5,
+          overwrite: "auto",
+        });
+      }
     };
 
     // Mobile Scroll (Touch Gesture)
@@ -41,21 +43,24 @@ export default function ScrollCards() {
     const handleTouchMove = (event: TouchEvent) => {
       event.preventDefault();
 
-      const totalWidth = wrapperRef.current!.scrollWidth - container.clientWidth;
-      const touchMoveX = event.touches[0].clientX;
-      const moveDistance = touchStartX - touchMoveX; // Detect swipe direction
+      // Allow horizontal scroll only if inside the card section (isHovered)
+      if (isHovered) {
+        const touchMoveX = event.touches[0].clientX;
+        const moveDistance = touchStartX - touchMoveX; // Detect swipe direction
 
-      const newPos = Math.min(Math.max(0, scrollX + moveDistance), totalWidth);
-      setScrollX(newPos);
+        const totalWidth = wrapperRef.current!.scrollWidth - container.clientWidth;
+        const newPos = Math.min(Math.max(0, scrollX + moveDistance), totalWidth);
+        setScrollX(newPos);
 
-      gsap.to(wrapperRef.current, {
-        x: -newPos,
-        ease: "power2.out",
-        duration: 0.5,
-        overwrite: "auto",
-      });
+        gsap.to(wrapperRef.current, {
+          x: -newPos,
+          ease: "power2.out",
+          duration: 0.5,
+          overwrite: "auto",
+        });
 
-      setTouchStartX(touchMoveX);
+        setTouchStartX(touchMoveX);
+      }
     };
 
     // Attach Events
@@ -68,11 +73,16 @@ export default function ScrollCards() {
       container.removeEventListener("touchstart", handleTouchStart);
       container.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [scrollX, touchStartX]);
+  }, [scrollX, touchStartX, isHovered]);
 
   return (
     <main className="h-full flex items-center justify-center bg-gray-900 text-white">
-      <div ref={containerRef} className="relative w-full max-w-7xl overflow-hidden">
+      <div
+        ref={containerRef}
+        className="relative w-full max-w-7xl overflow-hidden"
+        onMouseEnter={() => setIsHovered(true)}  // Set isHovered to true when mouse enters the card section
+        onMouseLeave={() => setIsHovered(false)} // Set isHovered to false when mouse leaves the card section
+      >
         <div ref={wrapperRef} className="flex gap-6 w-max py-10 px-6">
           {Array.from({ length: 10 }).map((_, i) => (
             <div

@@ -1,55 +1,34 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-
-export default function ScrollCards() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [mouseY, setMouseY] = useState(0);
-
-  useEffect(() => {
-    if (!containerRef.current || !wrapperRef.current) return;
-
-    const handleMouseWheel = (event: WheelEvent) => {
-      event.preventDefault();
-
-      const totalWidth = wrapperRef.current.scrollWidth - containerRef.current.clientWidth;
-      const moveDistance = event.deltaY; // Directly using the deltaY for scroll movement
-      const newPos = Math.min(Math.max(0, mouseY + moveDistance), totalWidth); // Ensure scroll stays within bounds
-
-      setMouseY(newPos);
-
-      gsap.to(wrapperRef.current, {
-        x: -newPos,
-        ease: "power1.inOut",
-        overwrite: "auto", // Overwrites previous animation
-      });
-    };
-
-    const container = containerRef.current;
-
-    container.addEventListener("wheel", handleMouseWheel, { passive: false });
-
-    return () => {
-      container.removeEventListener("wheel", handleMouseWheel);
-    };
-  }, [mouseY]);
-
+// components/Card.js
+export default function Card() {
   return (
-    <main className="h-full flex items-center justify-center bg-gray-900 text-white">
-      <div ref={containerRef} className="relative w-full max-w-7xl overflow-hidden">
-        <div ref={wrapperRef} className="flex gap-6 w-max py-10 px-6">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-72 h-96 bg-gray-800 rounded-2xl flex items-center justify-center shadow-lg text-xl font-bold"
-            >
-              Card {i + 1}
-            </div>
-          ))}
+    <div className="max-w-sm mx-auto">
+      {/* Card Container */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-lg relative group">
+        
+        {/* Image Section */}
+        <div className="relative">
+          <img
+            src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?cs=srgb&dl=pexels-anjana-c-169994-674010.jpg&fm=jpg"
+            alt="Image"
+            className="w-full h-64 object-cover"
+          />
+          
+          {/* Title on Image */}
+          <div className="absolute bottom-2 left-2 text-white font-semibold text-lg bg-black bg-opacity-50 p-2 rounded">
+            Beautiful Landscape
+          </div>
         </div>
+        
+        {/* Behind Card (Initially hidden) */}
+        <div
+          className="bg-white shadow-lg w-full opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:max-h-[100px]"
+        >
+          <p className="text-gray-700 p-4">
+            This is a description that becomes visible when you hover over the image. It provides more context to the image and its content.
+          </p>
+        </div>
+        
       </div>
-    </main>
+    </div>
   );
 }

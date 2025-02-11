@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 const categories = ["New Drops", "Inverter", "AIO Lithium", "Ac Stabiliser"];

@@ -1,6 +1,7 @@
 "use client";
 import PromoBanner from '../components/prenavbar'; 
 import Navbar from '../components/navbar'; 
+import Fotter from '../components/footer'; 
 export default function ContactUs() {
 
   return (
@@ -23,11 +24,11 @@ export default function ContactUs() {
 
         <form className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
-            <input type="text" placeholder="First Name" className="border p-3 w-full rounded" />
-            <input type="text" placeholder="Last Name" className="border p-3 w-full rounded" />
+            <input type="text" placeholder="First Name" className="border p-2 w-full rounded-2xl" />
+            <input type="text" placeholder="Last Name" className="border p-2 w-full rounded-2xl" />
           </div>
-          <input type="email" placeholder="Email" className="border p-3 w-full rounded" />
-          <input type="email" placeholder="Confirm Email" className="border p-3 w-full rounded" />
+          <input type="email" placeholder="Email" className="border p-2 w-full rounded-2xl" />
+          <input type="email" placeholder="Confirm Email" className="border p-2 w-full rounded-2xl" />
 
           <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
             <label><input type="checkbox" className="mr-2" /> Website Design</label>
@@ -57,6 +58,7 @@ export default function ContactUs() {
 </div>
 
     </div>
+    <Fotter/>
     </>
   );
 }

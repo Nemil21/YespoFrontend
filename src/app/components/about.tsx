@@ -7,7 +7,7 @@ import Iamge3 from "../../../public/Static/Image/about3.png";
 
 export default function AboutYepso() {
   return (
-    <div className="relative w-full px-4 sm:px-8 md:px-16 lg:px-24 py-12 bg-gray-100 flex flex-col md:flex-row items-center justify-center gap-8">
+    <div className="relative w-full px-4 sm:px-8 md:px-16 lg:px-24 py-12 flex flex-col md:flex-row items-center justify-center gap-8">
       {/* About Us Card */}
       <div className="relative w-full max-w-2xl bg-white shadow-lg rounded-2xl p-6 md:p-8 h-full min-h-[413px] flex flex-col justify-between">
         {/* Title */}
