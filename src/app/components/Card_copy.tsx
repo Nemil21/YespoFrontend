@@ -19,6 +19,7 @@ const fetchDataFromApis = async () => {
 export default function ScrollCards() {
   const containerRef = useRef(null);
   const wrapperRef = useRef(null);
+  const cardRefs = useRef([]);
   const [scrollX, setScrollX] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [allCards, setAllCards] = useState([]);
@@ -66,7 +67,7 @@ export default function ScrollCards() {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 1 } //how much of an observed element needs to be visible in the viewport for the observer to trigger its callback.
     );
 
     const cardsElements = document.querySelectorAll('.card');
@@ -74,13 +75,30 @@ export default function ScrollCards() {
     return () => cardsElements.forEach((card) => observer.unobserve(card));
   }, [allCards]);
 
+  const handleScrollToCategory = (index) => {
+    const cardElement = cardRefs.current.find(
+      (card) => card.dataset.apiIndex == index
+    );
+    if (cardElement && wrapperRef.current) {
+      const containerWidth = containerRef.current.clientWidth;
+      const cardLeftOffset = cardElement.offsetLeft;
+      const scrollPosition = Math.max(0, cardLeftOffset - containerWidth / 2 + cardElement.clientWidth / 2);
+      gsap.to(wrapperRef.current, {
+        x: -scrollPosition,
+        ease: "power2.out",
+        duration: 0.8,
+      });
+    }
+  };
+
   return (
-    <main className="h-full flex items-center justify-center py-10 px-20 flex-col">
-      <div className="flex items-center gap-1 p-4 bg-gray-100 justify-center whitespace-nowrap overflow-x-hidden mb-6">
-        {["New Drops", "Inverter", "AIO Lithium", "Ac Stabiliser"].map((label, index) => (
+    <main className="h-full flex items-center justify-center py-10 px-20 flex-col w-full">
+      <div className="grid-cols-4 items-center p-4 bg-gray-100 whitespace-nowrap overflow-x-hidden w-full ">
+        {["New Drops", "Inveter", "AIO Lithium", "AC Stabilizer"].map((label, index) => (
           <button
             key={index}
-            className={`px-4 py-2 rounded-full transition-all text-sm font-semibold ${
+            onClick={() => handleScrollToCategory(index)}
+            className={`px-10 py-2 gap-10 rounded-full transition-all text-sm font-semibold ${
               activeApiIndex === index
                 ? "bg-red-600 text-white"
                 : "text-black hover:text-gray-600"
@@ -98,6 +116,7 @@ export default function ScrollCards() {
               key={`${card.id}-${card.card_title}-${index}`}
               data-api-index={card.apiIndex}
               className="max-w-[320px] mx-auto group transform transition-all duration-300 ease-in-out hover:scale-110 card"
+              ref={(el) => (cardRefs.current[index] = el)}
             >
               <div className="bg-white rounded-lg overflow-hidden shadow-lg relative group w-80 h-60">
                 <div className="relative w-full h-full">

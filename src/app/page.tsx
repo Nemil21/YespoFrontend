@@ -16,7 +16,6 @@ const HomePage = () => {
       <Navbar/>
       <ResponsiveCarousel />
       <VoltageEngineer/>
-      < Buttonstxt/>
       < Cards />
       < AboutYepso />
       <div>
