@@ -10,11 +10,22 @@ import Image from 'next/image';
 
 
 const HomePage = () => {
+  const images = [
+    "/Static/Image/Banner.png",
+    "/Static/Image/Banner.png",
+    "/Static/Image/Banner.png",
+  ];
+
   return (
-    <div className='overflow-x-hidden'>
+    
+    <div >
       <PromoBanner />
       <Navbar/>
-      <ResponsiveCarousel />
+      <ResponsiveCarousel 
+      images={images} 
+        autoplayDelay={5000} 
+        slidesPerView={1} 
+        spaceBetween={30}/>
       <VoltageEngineer/>
       < Cards />
       < AboutYepso />
