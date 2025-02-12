@@ -2,8 +2,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['127.0.0.1', 'localhost'], // Add localhost or 127.0.0.1
+    remotePatterns: [
+      {
+        protocol: 'http', // Local server uses http by default
+        hostname: '127.0.0.1', // Localhost address (or you can use 'localhost')
+        port: '8000', // Default port for local Django server
+        pathname: '/media/**', // Assuming Django serves media files from '/media/'
+        search: '',
+      },
+    ],
   },
+  
   /* config options here */
 };
 

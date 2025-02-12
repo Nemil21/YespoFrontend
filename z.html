@@ -5,36 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Card with Image and Description</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Initially hide the description */
-    .behindcard {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: opacity 0.3s ease, max-height 0.3s ease;
-    }
-    
-    /* Hover effect on card */
-    .card-container {
-      transition: transform 0.3s ease;
-    }
-
-    .card-container:hover {
-      transform: scale(1.05); /* Slight expansion effect */
-    }
-
-    /* Show description on hover */
-    .card-container:hover .behindcard {
-      opacity: 1;
-      max-height: 100px; /* Adjust this based on the content height */
-    }
-  </style>
 </head>
 <body class="bg-gray-100 p-10">
 
   <div class="max-w-sm mx-auto">
     <!-- Card Container -->
-    <div class="bg-white rounded-lg overflow-hidden shadow-lg relative group card-container">
+    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
       
       <!-- Image Section -->
       <div class="relative">
@@ -45,14 +21,6 @@
           Beautiful Landscape
         </div>
       </div>
-      
-      <!-- Behind Card (Initially hidden) -->
-      <div id="behindcard" class="behindcard  bg-white shadow-lg w-full">
-        <p class="text-gray-700 p-4">
-          This is a description that becomes visible when you hover over the image. It provides more context to the image and its content.
-        </p>
-      </div>
-      
     </div>
   </div>
 

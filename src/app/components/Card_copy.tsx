@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 import parse from "html-react-parser";
 
 const fetchDataFromApis = async () => {
@@ -67,7 +68,7 @@ export default function ScrollCards() {
           }
         });
       },
-      { threshold: 1 } //how much of an observed element needs to be visible in the viewport for the observer to trigger its callback.
+      { threshold: 0.7 } // Adjusted threshold to 50% visibility
     );
 
     const cardsElements = document.querySelectorAll('.card');
@@ -88,52 +89,68 @@ export default function ScrollCards() {
         ease: "power2.out",
         duration: 0.8,
       });
+      setActiveApiIndex(index); // Update the active API index when the button is clicked
     }
   };
 
   return (
-    <main className="h-full flex items-center justify-center py-10 px-20 flex-col w-full">
-<div className="flex flex-row justify-start items-center  bg-gray-100 whitespace-nowrap overflow-x-hidden w-full lg:p-4 lg:gap-20 sm:gap-4">
-  {["New Drops", "Inveter", "AIO Lithium", "AC Stabilizer"].map((label, index) => (
-    <button
-      key={index}
-      onClick={() => handleScrollToCategory(index)}
-      className={`px-4 py-2 gap-15 rounded-full transition-all text-sm font-semibold whitespace-nowrap ${
-        activeApiIndex === index
-          ? "bg-red-600 text-white"
-          : "text-black hover:text-gray-600"
-      }`}
-    >
-      {label}
-    </button>
-  ))}
-</div>
-
-
+    <main className="h-full flex items-center justify-center py-10 px-20 flex-col w-full lg:translate-x-10">
+      <div className="flex flex-row justify-start items-center whitespace-nowrap overflow-x-hidden w-full lg:p-10 lg:gap-20 sm:gap-4">
+        {["New Drops", "Inveter", "AIO Lithium", "AC Stabilizer"].map((label, index) => (
+          <button
+            key={index}
+            onClick={() => handleScrollToCategory(index)}
+            className={`px-5 py-2 gap-15 rounded-full transition-all text-sm font-semibold whitespace-nowrap lg:px-10 ${
+              activeApiIndex === index
+                ? "bg-red-600 text-white"
+                : "text-black hover:text-gray-600"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
       <div ref={containerRef} className="relative w-full overflow-hidden">
-        <div ref={wrapperRef} className="flex gap-6 w-max py-10 px-6">
+        <div ref={wrapperRef} className="flex gap-6 w-max py-8 px-6">
           {allCards.map((card, index) => (
             <div
               key={`${card.id}-${card.card_title}-${index}`}
               data-api-index={card.apiIndex}
-              className="max-w-[320px] mx-auto group transform transition-all duration-300 ease-in-out hover:scale-110 card"
+              className="relative w-[400px] h-[300px] rounded-xl bg-red-50 shadow-lg overflow-hidden group card lg:gap-10"
               ref={(el) => (cardRefs.current[index] = el)}
             >
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg relative group w-80 h-60">
-                <div className="relative w-full h-full">
-                  <img
+              {/* Main Image: Render only if a valid URL exists */}
+              <div className="relative w-full h-full">
+                {card.card_image ? (
+                  <Image
                     src={card.card_image}
                     alt={card.card_title}
-                    className="w-full h-full object-cover"
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-xl"
                   />
-                  <div className="absolute bottom-2 left-2 text-white font-semibold text-lg bg-black bg-opacity-50 p-2 rounded">
-                    {card.card_title}
-                  </div>
+                ) : null}
+              </div>
+
+              {/* Small Product Image Overlay: Render only if product_image exists */}
+              {card.product_image && (
+                <div className="absolute bottom-3 right-3 w-20 h-14">
+                  <Image
+                    src={card.product_image}
+                    alt="Product"
+                    width={80}
+                    height={56}
+                    className="rounded-md shadow-md"
+                  />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                  <div className="text-gray-700 p-4">{parse(card.catalogs_desc)}</div>
-                </div>
+              )}
+
+              {/* Title Section */}
+              <div className="absolute bottom-0 left-0 w-full bg-white p-2">
+                <p className="text-gray-800 font-semibold text-xl px-4 rounded-lg border-solid">
+                  {card.card_title}
+                </p>
               </div>
             </div>
           ))}

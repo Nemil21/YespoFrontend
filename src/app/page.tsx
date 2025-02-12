@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 const HomePage = () => {
   return (
-    <div>
+    <div >
       <PromoBanner />
       <Navbar/>
       <ResponsiveCarousel />
