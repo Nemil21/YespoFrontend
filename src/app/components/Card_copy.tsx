@@ -93,21 +93,23 @@ export default function ScrollCards() {
 
   return (
     <main className="h-full flex items-center justify-center py-10 px-20 flex-col w-full">
-      <div className="grid-cols-4 items-center p-4 bg-gray-100 whitespace-nowrap overflow-x-hidden w-full ">
-        {["New Drops", "Inveter", "AIO Lithium", "AC Stabilizer"].map((label, index) => (
-          <button
-            key={index}
-            onClick={() => handleScrollToCategory(index)}
-            className={`px-10 py-2 gap-10 rounded-full transition-all text-sm font-semibold ${
-              activeApiIndex === index
-                ? "bg-red-600 text-white"
-                : "text-black hover:text-gray-600"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+<div className="flex flex-row justify-start items-center  bg-gray-100 whitespace-nowrap overflow-x-hidden w-full lg:p-4 lg:gap-20 sm:gap-4">
+  {["New Drops", "Inveter", "AIO Lithium", "AC Stabilizer"].map((label, index) => (
+    <button
+      key={index}
+      onClick={() => handleScrollToCategory(index)}
+      className={`px-4 py-2 gap-15 rounded-full transition-all text-sm font-semibold whitespace-nowrap ${
+        activeApiIndex === index
+          ? "bg-red-600 text-white"
+          : "text-black hover:text-gray-600"
+      }`}
+    >
+      {label}
+    </button>
+  ))}
+</div>
+
+
 
       <div ref={containerRef} className="relative w-full overflow-hidden">
         <div ref={wrapperRef} className="flex gap-6 w-max py-10 px-6">
