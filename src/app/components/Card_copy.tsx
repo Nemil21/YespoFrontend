@@ -1,21 +1,19 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import Head from "next/head";
-import Image from "next/image";
 import parse from "html-react-parser";
 
 const fetchDataFromApis = async () => {
   const urls = [
-    'http://127.0.0.1:8000/catalog/catalogs_ac_stabalizer/',
-    'http://127.0.0.1:8000/catalog/catalogs_inveter/',
     'http://127.0.0.1:8000/catalog/catalogs_new_drops/',
+    'http://127.0.0.1:8000/catalog/catalogs_inveter/',
     'http://127.0.0.1:8000/catalog/catalogs_aio_lithium/',
+    'http://127.0.0.1:8000/catalog/catalogs_ac_stabalizer/',
   ];
 
   const responses = await Promise.all(urls.map((url) => fetch(url)));
   const data = await Promise.all(responses.map((response) => response.json()));
-  return data;
+  return data.map((catalog, index) => catalog.map((item) => ({ ...item, apiIndex: index })));
 };
 
 export default function ScrollCards() {
@@ -24,16 +22,13 @@ export default function ScrollCards() {
   const [scrollX, setScrollX] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const [allCards, setAllCards] = useState([]);
-  const [title, setTitle] = useState("");
+  const [activeApiIndex, setActiveApiIndex] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
       const catalogs = await fetchDataFromApis();
       const allCards = catalogs.flat();
       setAllCards(allCards);
-      if (allCards.length > 0) {
-        setTitle(allCards[0].card_title);
-      }
     };
     getData();
   }, []);
@@ -42,6 +37,7 @@ export default function ScrollCards() {
     if (!containerRef.current || !wrapperRef.current) return;
 
     const container = containerRef.current;
+
     const handleWheelScroll = (event) => {
       event.preventDefault();
       const totalWidth = wrapperRef.current.scrollWidth - container.clientWidth;
@@ -57,64 +53,65 @@ export default function ScrollCards() {
       });
     };
 
-    const handleTouchStart = (event) => {
-      setTouchStartX(event.touches[0].clientX);
-    };
-
-    const handleTouchMove = (event) => {
-      event.preventDefault();
-      const totalWidth = wrapperRef.current.scrollWidth - container.clientWidth;
-      const touchMoveX = event.touches[0].clientX;
-      const moveDistance = touchStartX - touchMoveX;
-      const newPos = Math.min(Math.max(0, scrollX + moveDistance), totalWidth);
-      setScrollX(newPos);
-
-      gsap.to(wrapperRef.current, {
-        x: -newPos,
-        ease: "power2.out",
-        duration: 0.5,
-        overwrite: "auto",
-      });
-      setTouchStartX(touchMoveX);
-    };
-
     container.addEventListener("wheel", handleWheelScroll, { passive: false });
-    container.addEventListener("touchstart", handleTouchStart, { passive: true });
-    container.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheelScroll);
+  }, [scrollX]);
 
-    return () => {
-      container.removeEventListener("wheel", handleWheelScroll);
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, [scrollX, touchStartX]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveApiIndex(parseInt(entry.target.dataset.apiIndex));
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const cardsElements = document.querySelectorAll('.card');
+    cardsElements.forEach((card) => observer.observe(card));
+    return () => cardsElements.forEach((card) => observer.unobserve(card));
+  }, [allCards]);
 
   return (
-    <main className="h-full flex items-center justify-center py-10 px-20">
+    <main className="h-full flex items-center justify-center py-10 px-20 flex-col">
+      <div className="flex items-center gap-1 p-4 bg-gray-100 justify-center whitespace-nowrap overflow-x-hidden mb-6">
+        {["New Drops", "Inverter", "AIO Lithium", "Ac Stabiliser"].map((label, index) => (
+          <button
+            key={index}
+            className={`px-4 py-2 rounded-full transition-all text-sm font-semibold ${
+              activeApiIndex === index
+                ? "bg-red-600 text-white"
+                : "text-black hover:text-gray-600"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       <div ref={containerRef} className="relative w-full overflow-hidden">
         <div ref={wrapperRef} className="flex gap-6 w-max py-10 px-6">
           {allCards.map((card, index) => (
             <div
               key={`${card.id}-${card.card_title}-${index}`}
-              className="max-w-sm mx-auto group transform transition-all duration-300 ease-in-out hover:scale-105"
+              data-api-index={card.apiIndex}
+              className="max-w-[320px] mx-auto group transform transition-all duration-300 ease-in-out hover:scale-110 card"
             >
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg relative group">
-                <div className="relative">
+              <div className="bg-white rounded-lg overflow-hidden shadow-lg relative group w-80 h-60">
+                <div className="relative w-full h-full">
                   <img
                     src={card.card_image}
                     alt={card.card_title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="w-full h-64 object-cover"
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute bottom-2 left-2 text-white font-semibold text-lg bg-black bg-opacity-50 p-2 rounded">
                     {card.card_title}
                   </div>
                 </div>
-                
-                {/* Hover Description Box - Absolutely Positioned */}
                 <div className="absolute bottom-0 left-0 right-0 bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                  <p className="text-gray-700 p-4">{parse(card.catalogs_desc)}</p>
+                  <div className="text-gray-700 p-4">{parse(card.catalogs_desc)}</div>
                 </div>
               </div>
             </div>
