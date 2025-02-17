@@ -60,12 +60,12 @@ export default function ProductPage() {
 
       {/* Breadcrumb */}
       <div className="bg-gray-100 py-2 px-4">
-        <div className="max-w-7xl mx-auto text-xl text-gray-600">
+        <div className="w-full mx-auto text-xl text-gray-600">
           <span>Products</span> &gt; <span className="font-semibold">{product.name}</span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image Section */}
         <div>
           {/* Main Swiper for Large Image */}
@@ -92,7 +92,7 @@ export default function ProductPage() {
               <button
                 key={index}
                 onClick={() => swiperRef?.slideTo(index)}
-                className={`w-23 h-23 relative border rounded-lg overflow-hidden ${swiperRef?.activeIndex === index ? 'border-black' : 'border-gray-300'
+                className={`w-15 h-15 relative border rounded-lg overflow-hidden ${swiperRef?.activeIndex === index ? 'border-black' : 'border-gray-300'
                   }`}
               >
                 <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full " />
@@ -128,7 +128,7 @@ export default function ProductPage() {
           {/* Add to Cart Section */}
           <div className="mt-6 flex items-center gap-6">
             {/* Quantity Selector */}
-            <div className="flex items-center border border-black rounded-xl px-5 py-[6px]">
+            <div className="flex items-center border border-black rounded-xl px-5 py-[6px] gap-1">
               <button
                 onClick={() => handleQuantityChange('decrement')}
                 className="text-lg font-bold px-[10px]"
@@ -175,7 +175,7 @@ export default function ProductPage() {
       </div>
 
       {/* Tabs Section */}
-      <div className="mt-[30px] max-w-[1200px] mx-auto p-[15px]">
+      <div className="mt-[30px] max-w-[1440px] mx-auto p-[15px]">
         <div className="flex justify-center gap-[20px] border-b pb-[10px]">
           {Object.keys(product.tabs).map((tab) => (
             <button
