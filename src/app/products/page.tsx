@@ -9,14 +9,14 @@ import Image from 'next/image';
 
 const ProductPage = () => {
   const images = [
-    "/Static/Image/Banner.png",
-    "/Static/Image/Banner.png",
-    "/Static/Image/Banner.png",
+    "/Static/Crousal/product/crousal2.png",
+    "/Static/Crousal/product/crousal2.png",
+    "/Static/Crousal/product/crousal2.png",
   ];
 
   return (
     
-    <div>
+    <div className='bg-[#F8F8F8]'>
       <PromoBanner />
       <Navbar/>
       <ResponsiveCarousel 
@@ -25,7 +25,7 @@ const ProductPage = () => {
         slidesPerView={1} 
         spaceBetween={30}/>
 
-        <Categories/>
+        <Categories/> {/* catagory */}
         <ProductCatalogue/>
 
     
