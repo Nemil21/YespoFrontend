@@ -216,7 +216,7 @@ export default function ProductPage() {
       </div>
 
       {/* Suggested Products */}
-      <h1 className='text-4xl text-center py-2'>You may also Like</h1>
+      <h1 className='text-4xl text-center py-2 sm:text-lg md:text-2xl'>You may also Like</h1>
       <div className="flex flex-wrap justify-center gap-6 py-10">
         {productList.map((product, index) => (
           <ProductCardDetailed key={index} {...product} />
