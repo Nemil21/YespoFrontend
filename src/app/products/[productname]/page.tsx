@@ -48,6 +48,12 @@ const product = {
     '/Static/product/im2.svg',
     '/Static/product/im3.svg',
   ],
+  hoverImage: [
+    '/Static/product/im1.svg',
+    '/Static/product/im2.svg',
+    '/Static/product/im3.svg',
+  ],
+  
   features: [
     { icon: '/Static/icons/sine.png', label: 'Pure Sine Wave' },
     { icon: '/Static/icons/MPPT.png', label: 'True MPPT' },
