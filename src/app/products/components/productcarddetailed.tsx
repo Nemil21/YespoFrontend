@@ -37,7 +37,7 @@ const ProductCardDetailed = ({ image, hoverImage, discount, title, reviews, pric
         {/* Buttons (hidden by default and appear on hover) */}
         <div className="absolute inset-0 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 bg-black/40 duration-500">
           {/* Quick View Button */}
-          <button className="relative flex items-center justify-center w-40 h-10 bg-white text-black rounded-full mx-2 mb-2 transition-all duration-300 hover:bg-gray-100 group/button">
+          <button className="relative flex items-center justify-center w-40 h-10 bg-white text-black rounded-full mx-2 mb-2 transition-all duration-300 hover:bg-gray-800 hover:text-white group/button">
             <span className="group-hover/button:opacity-0 transition-opacity duration-200">
               Quick View
             </span>
