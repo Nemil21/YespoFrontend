@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Search, User, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Logo from "../../../public/Static/Logo/image.png"
 
 export default function Navbar() {
@@ -35,11 +36,11 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-10 items-center whitespace-nowrap lg:gap-10">
-          <a href="#" className="text-black hover:text-red-600">Home</a>
-          <a href="#" className="text-black hover:text-red-600">Products</a>
-          <a href="#" className="text-black hover:text-red-600">Services</a>
-          <a href="#" className="text-black hover:text-red-600">Catalogue</a>
-          <a href="#" className="text-black hover:text-red-600">Contact Us</a> 
+          <Link href="#" className="text-black hover:text-red-600">Home</Link>
+          <Link href="/products" className="text-black hover:text-red-600">Products</Link>
+          <Link href="/contactUs" className="text-black hover:text-red-600">Services</Link>
+          <Link href="/products" className="text-black hover:text-red-600">Catalogue</Link>
+          <Link href="/contactUs" className="text-black hover:text-red-600">Contact Us</Link> 
           
           {/* Search Bar */}
           <div className="relative">
