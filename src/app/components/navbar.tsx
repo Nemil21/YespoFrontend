@@ -27,16 +27,16 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`transition-all duration-300 w-full sticky top-0 z-50  ${isScrolled ? 'bg-white bg-opacity-80 shadow-lg' : 'bg-transparent'} overflow-x-hidden`}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-3">
+    <nav className={`transition-all duration-300 w-full sticky top-0 z-50 ${isScrolled ? 'bg-white bg-opacity-80 shadow-lg' : 'bg-transparent'} overflow-x-hidden`}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-3">
 
-        {/* Logo */}
+        {/* Logo (left-aligned) */}
         <div className="flex items-center space-x-2">
           <Image src={Logo} alt="Logo" width={120} height={40} />
         </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-10 items-center whitespace-nowrap lg:gap-10">
+        {/* Centered Menu */}
+        <div className="hidden md:flex justify-center flex-grow space-x-10 items-center whitespace-nowrap lg:gap-10">
           <Link href="/" className="text-black hover:text-red-600">Home</Link>
           <Link href="/products" className="text-black hover:text-red-600">Products</Link>
           <Link href="/contactUs" className="text-black hover:text-red-600">Contact Us</Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden flex flex-col space-y-4 p-4 bg-white shadow-lg">
+        <div className="md:hidden flex flex-col items-center space-y-4 p-4 bg-white shadow-lg">
           <Link href="/" className="text-black hover:text-red-600">Home</Link>
           <Link href="/products" className="text-black hover:text-red-600">Products</Link>
           <Link href="/contactUs" className="text-black hover:text-red-600">Contact Us</Link>
